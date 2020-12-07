@@ -42,9 +42,11 @@ class ETWeekWatcher(Watcher):
 
     @staticmethod
     def _extract_schedule_info(html_data):
-        regex = r'''\s+([A-Z][a-z]+)\s(\d+),\s([0-9:]+ [A-Z]+\s+to\s+[0-9:]+ [A-Z]+)\n</td>\n<td>\n<strong>Availability</strong><br/>(\d+)\s+spaces'''
-        data = parse_html_table(html_data, regex)
-        print(data)
+        regex1 = r'''([M,T,W,F,S][a-z]{2}),\s+([A-Z][a-z]+)\s(\d+),\s([0-9:]+ [A-Z]+\s+to\s+[0-9:]+ [A-Z]+)\n</td>\n<td>\n<strong>Availability</strong><br/>(\d+)\s+spaces'''
+        regex2 = r'''([M,T,W,F,S][a-z]{2}),\s+([A-Z][a-z]+)\s(\d+),\s([0-9:]+ [A-Z]+\s+to\s+[0-9:]+ [A-Z]+)\n</td>\n<td>\n<strong>Availability</strong><br/><div class="(offering-page-event-is-full)'''
+        data = parse_html_table(html_data, regex1)
+        data1 = parse_html_table(html_data, regex2)
+        return [d for d in data+data1 if d]
 
     def update_database(self) -> None:
         pass
@@ -52,4 +54,6 @@ class ETWeekWatcher(Watcher):
 
 if __name__ == "__main__":
     etcc_watcher = ETWeekWatcher()
-    etcc_watcher._extract_schedule_info(etcc_watcher.retrieve('2020-12-07'))
+    from app.app.common.misc import future_dates
+    for date in future_dates(21):
+        print(etcc_watcher._extract_schedule_info(etcc_watcher.retrieve(date)))

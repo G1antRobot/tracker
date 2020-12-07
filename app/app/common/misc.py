@@ -13,11 +13,18 @@ def parse_html_table(html_string: str, regex: str) -> List[tuple]:
     soup = BS(html_string, 'lxml')
     for row in soup.find_all("tr"):
         html_to_table.append(re.findall(regex, str(row)))
-        print(row)
     return html_to_table
 
+#
+# def parse_html_table_testing(html_string: str) -> List[tuple]:
+#     html_to_table = []
+#     soup = BS(html_string, 'lxml')
+#     for row in soup.find_all('tr'):
+#         soup2 = BS(row, 'lxml')
+#         print(soup2.findall())
 
-def _dates(date_count: int = 7) -> List[str]:
+
+def future_dates(date_count: int = 7) -> List[str]:
     """ Provides list of date strings in yyyy-mm-dd format.
         Dates measured from today until max count.
     """
