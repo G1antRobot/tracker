@@ -1,6 +1,6 @@
 from app.app.observer.watcher import Watcher
 from typing import Dict
-from app.app.common import url_pull
+from app.app.common import url_pull, parse_html_table
 
 
 class ETWeekWatcher(Watcher):
@@ -11,7 +11,6 @@ class ETWeekWatcher(Watcher):
         'Accept': '*/*',
         'X-Requested-With': 'XMLHttpRequest',
         'Accept-Language': 'en-us',
-        'Accept-Encoding': 'br, gzip, deflate',
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
         'Origin': 'https://app.rockgympro.com',
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) '
@@ -39,7 +38,13 @@ class ETWeekWatcher(Watcher):
         pulled_data = url_pull(self._base_url,
                                payload=formatted_payload,
                                request_headers=self._et_headers)
-        return pulled_data
+        return pulled_data['event_list_html']
+
+    @staticmethod
+    def _extract_schedule_info(html_data):
+        regex = r'''\s+([A-Z][a-z]+)\s(\d+),\s([0-9:]+ [A-Z]+\s+to\s+[0-9:]+ [A-Z]+)\n</td>\n<td>\n<strong>Availability</strong><br/>(\d+)\s+spaces'''
+        data = parse_html_table(html_data, regex)
+        print(data)
 
     def update_database(self) -> None:
         pass
@@ -47,4 +52,4 @@ class ETWeekWatcher(Watcher):
 
 if __name__ == "__main__":
     etcc_watcher = ETWeekWatcher()
-    print(etcc_watcher.retrieve('2020-12-15'))
+    etcc_watcher._extract_schedule_info(etcc_watcher.retrieve('2020-12-07'))

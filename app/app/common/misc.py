@@ -1,10 +1,20 @@
 from typing import List
 from app.app.common import UrlPullError
+from bs4 import BeautifulSoup as BS
 from typing import Dict
 import datetime
 import requests
 import json
+import re
 
+
+def parse_html_table(html_string: str, regex: str) -> List[tuple]:
+    html_to_table = []
+    soup = BS(html_string, 'lxml')
+    for row in soup.find_all("tr"):
+        html_to_table.append(re.findall(regex, str(row)))
+        print(row)
+    return html_to_table
 
 
 def _dates(date_count: int = 7) -> List[str]:
