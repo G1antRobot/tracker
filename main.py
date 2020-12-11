@@ -1,4 +1,6 @@
+#!/usr/env python3
 # Main entry point
+
 from app.observer import ETCCWatcher
 from app.common.misc import future_dates
 
