@@ -7,7 +7,7 @@ class Watcher(ABC):
         self._data = None
     
     @abstractmethod
-    def retrieve(self) -> None:
+    def retrieve(self, date: str) -> None:
         """Retrieves info from source"""
         pass
 

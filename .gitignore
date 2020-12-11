@@ -1,3 +1,4 @@
 .idea/*
-vevn/*
+venv/*
 *.pyc
+.ipynub_checkpoints/*

@@ -1,5 +1,5 @@
 from typing import List
-from app.app.common import UrlPullError
+from app.common import UrlPullError
 from bs4 import BeautifulSoup as BS
 from typing import Dict
 import datetime
@@ -12,7 +12,8 @@ def parse_html_table(html_string: str, regex: str) -> List[tuple]:
     html_to_table = []
     soup = BS(html_string, 'lxml')
     for row in soup.find_all("tr"):
-        html_to_table.append(re.findall(regex, str(row)))
+        for d in re.findall(regex, str(row)):
+            html_to_table.append(d)
     return html_to_table
 
 #
