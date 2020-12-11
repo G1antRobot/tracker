@@ -2,3 +2,9 @@
 venv/*
 *.pyc
 .ipynub_checkpoints/*
+
+
+## build artifacts
+build/*
+dist/*
+*.egg-info/*
